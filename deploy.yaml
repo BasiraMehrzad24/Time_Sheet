@@ -1,0 +1,20 @@
+import: 
+  - recipe/laravel.php
+  - contrib/npm.php
+
+config:
+  repository: 'git@github.com:hamidafghan/timesheet.git'
+
+hosts:
+  easy-timesheet.com:
+    remote_user: hamid
+    deploy_path: '/home/hamid/easy-timesheet.com/'
+
+tasks:
+  deploy:build:
+    - run: 'cd {{release_path}} && npm install'
+    - run: 'cd {{release_path}} && npm run build'
+
+after:
+  deploy:failed: deploy:unlock
+  deploy:update_code: deploy:build
